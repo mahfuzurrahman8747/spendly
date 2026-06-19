@@ -20,7 +20,7 @@
         </p>
         <div class="hero-actions">
             <a href="{{ url_for('register') }}" class="btn-primary">Create free account</a>
-            <a href="#how-it-works" class="btn-primary">See how it works</a>
+            <a href="#" id="open-demo" class="btn-primary">See how it works</a>
         </div>
     </div>
     <div class="hero-visual">
@@ -99,4 +99,66 @@
     </div>
 </section>
 
+<div id="demo-modal" class="modal" aria-hidden="true" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title">
+        <div class="modal-header">
+            <h2 id="demo-modal-title" class="modal-title">See how Spendly works</h2>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-video">
+                <iframe id="demo-video" title="Spendly demo video"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    (function () {
+        var VIDEO_SRC = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0';
+
+        var modal = document.getElementById('demo-modal');
+        var openBtn = document.getElementById('open-demo');
+        var video = document.getElementById('demo-video');
+        if (!modal || !openBtn || !video) return;
+
+        function openModal() {
+            video.src = VIDEO_SRC;
+            modal.hidden = false;
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            video.src = '';
+            modal.hidden = true;
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        openBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            openModal();
+        });
+
+        modal.addEventListener('click', function (e) {
+            var target = e.target;
+            if (target && target.hasAttribute && target.hasAttribute('data-close-modal')) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !modal.hidden) {
+                closeModal();
+            }
+        });
+    })();
+</script>
 {% endblock %}
