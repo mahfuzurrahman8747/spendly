@@ -1,6 +1,23 @@
 from flask import Flask, render_template
 
+from database.db import init_db, seed_db
+
 app = Flask(__name__)
+
+# Run schema creation and demo seeding exactly once, before the first request
+# is handled. `before_request` runs inside the app context, which `init_db()`
+# and `seed_db()` need for `flask run`, WSGI runners, and direct execution.
+_db_bootstrapped = False
+
+
+@app.before_request
+def _bootstrap_db():
+    global _db_bootstrapped
+    if _db_bootstrapped:
+        return
+    init_db()
+    seed_db()
+    _db_bootstrapped = True
 
 
 # ------------------------------------------------------------------ #
