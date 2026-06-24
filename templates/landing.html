@@ -4,6 +4,13 @@
 
 {% block content %}
 
+{% if user_name %}
+<aside class="welcome-banner" role="status">
+    <span class="welcome-text">Welcome, <strong>{{ user_name }}</strong></span>
+    <a class="welcome-signout" href="{{ url_for('logout') }}">Sign out</a>
+</aside>
+{% endif %}
+
 <section class="hero">
     <div class="hero-inner">
         <div class="hero-badge">
